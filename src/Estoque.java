@@ -41,6 +41,7 @@ public class Estoque {
         return null;
     }
 
+    //teste
     private Produto buscarProdutoPorId(int id) {
         for (Produto p : produtos) {
             if (p.getId() == id) {
