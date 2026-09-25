@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class Estoque {
     private List<Produto> produtos;
@@ -10,10 +9,9 @@ public class Estoque {
     }
 
     public boolean cadastrarProduto(Produto produto) {
-        for (Produto p : produtos) {
-            if (p.getId() == produto.getId()) {
-                return false;
-            }
+       
+        if (buscarProdutoPorId(produto.getId()) != null) {
+            return false; 
         }
         produtos.add(produto);
         return true;
@@ -27,21 +25,22 @@ public class Estoque {
 
         System.out.println("\n===== PRODUTOS =====");
         for (Produto p : produtos) {
-            System.out.printf(Locale.US, "ID: %d | %s | R$ %.2f | Estoque: %d%n",
+            System.out.printf("ID: %d | %s | R$ %.2f | Estoque: %d%n",
                     p.getId(), p.getNome(), p.getPreco(), p.getQuantidadeEstoque());
         }
     }
 
     public Produto buscarProduto(String nome) {
+        String nomeBusca = nome.trim().toLowerCase();
         for (Produto p : produtos) {
-            if (p.getNome().equalsIgnoreCase(nome.trim())) {
+            
+            if (p.getNome().toLowerCase().contains(nomeBusca)) {
                 return p;
             }
         }
         return null;
     }
 
-    //teste
     private Produto buscarProdutoPorId(int id) {
         for (Produto p : produtos) {
             if (p.getId() == id) {
@@ -52,6 +51,11 @@ public class Estoque {
     }
 
     public boolean entrada(int id, int quantidade) {
+       
+        if (quantidade <= 0) {
+            return false; 
+        }
+
         Produto p = buscarProdutoPorId(id);
         if (p != null) {
             p.adicionar(quantidade);
@@ -61,6 +65,11 @@ public class Estoque {
     }
 
     public boolean saida(int id, int quantidade) {
+      
+        if (quantidade <= 0) {
+            return false;
+        }
+
         Produto p = buscarProdutoPorId(id);
         if (p != null) {
             return p.remover(quantidade);

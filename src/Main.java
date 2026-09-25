@@ -2,15 +2,15 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
-    public static void Main(String[] args) {
+    public static void main(String[] args) {
         Locale.setDefault(Locale.US);
         Scanner scanner = new Scanner(System.in);
         Estoque estoque = new Estoque();
-        int opcao;
+        int opcao = -1;
 
         do {
             System.out.println("\n=========================");
-            System.out.println("     CONTROLE D ESTOQUE");
+            System.out.println("     CONTROLE DE ESTOQUE");
             System.out.println("=========================");
             System.out.println("1 - Cadastrar produto");
             System.out.println("2 - Listar produtos");
@@ -20,35 +20,36 @@ public class Main {
             System.out.println("0 - Encerrar");
             System.out.print("Escolha uma opção: ");
 
-            while (!scanner.hasNextInt()) {
-                System.out.print("Entrada inválida. Escolha uma opção: ");
-                scanner.next();
+            try {
+                opcao = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Opção inválida! Digite apenas números.");
+                continue;
             }
-            opcao = scanner.nextInt();
-            scanner.nextLine();
 
             switch (opcao) {
                 case 1:
-                    System.out.print("Digite o ID do produto: ");
-                    int id = scanner.nextInt();
-                    scanner.nextLine();
+                    try {
+                        System.out.print("Digite o ID do produto: ");
+                        int id = Integer.parseInt(scanner.nextLine());
 
-                    System.out.print("Digite o nome do produto: ");
-                    String nome = scanner.nextLine();
+                        System.out.print("Digite o nome do produto: ");
+                        String nome = scanner.nextLine();
 
-                    System.out.print("Digite o preço do produto: R$ ");
-                    double preco = scanner.nextDouble();
-                    scanner.nextLine();
+                        System.out.print("Digite o preço do produto (ex: 10.50): R$ ");
+                        double preco = Double.parseDouble(scanner.nextLine().replace(",", "."));
 
-                    System.out.print("Digite a quantidade inicial em estoque: ");
-                    int qtdInicial = scanner.nextInt();
-                    scanner.nextLine();
+                        System.out.print("Digite a quantidade inicial em estoque: ");
+                        int qtdInicial = Integer.parseInt(scanner.nextLine());
 
-                    Produto novoProduto = new Produto(id, nome, preco, qtdInicial);
-                    if (estoque.cadastrarProduto(novoProduto)) {
-                        System.out.println("Produto cadastrado com sucesso!");
-                    } else {
-                        System.out.println("Erro: Já existe um produto cadastrado com o ID " + id + ".");
+                        Produto novoProduto = new Produto(id, nome, preco, qtdInicial);
+                        if (estoque.cadastrarProduto(novoProduto)) {
+                            System.out.println("Produto cadastrado com sucesso!");
+                        } else {
+                            System.out.println("Erro: Já existe um produto cadastrado com o ID " + id + ".");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Erro: Entrada inválida para ID, Preço ou Quantidade. Cadastro cancelado.");
                     }
                     break;
 
@@ -57,36 +58,38 @@ public class Main {
                     break;
 
                 case 3:
-                    System.out.print("Digite o ID do produto para entrada: ");
-                    int idEntrada = scanner.nextInt();
-                    scanner.nextLine();
-                    System.out.print("Digite a quantidade que deseja adicionar: ");
-                    int qtdEntrada = scanner.nextInt();
-                    scanner.nextLine();
+                    try {
+                        System.out.print("Digite o ID do produto para entrada: ");
+                        int idEntrada = Integer.parseInt(scanner.nextLine());
+                        System.out.print("Digite a quantidade que deseja adicionar: ");
+                        int qtdEntrada = Integer.parseInt(scanner.nextLine());
 
-                    if (estoque.entrada(idEntrada, qtdEntrada)) {
-                        System.out.println("Entrada registrada com sucesso!");
-                    } else {
-                        System.out.println("Erro: Produto com ID " + idEntrada + " não encontrado.");
+                        if (estoque.entrada(idEntrada, qtdEntrada)) {
+                            System.out.println("Entrada registrada com sucesso!");
+                        } else {
+                            System.out.println("Erro: Produto com ID " + idEntrada + " não encontrado.");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Erro: Entrada inválida. Por favor, digite números inteiros.");
                     }
-                    scanner.nextLine();
                     break;
 
                 case 4:
-                    System.out.print("Digite o ID do produto para saída: ");
-                    int idSaida = scanner.nextInt();
-                    scanner.nextLine();
-                    System.out.print("Digite a quantidade que deseja remover: ");
-                    int qtdSaida = scanner.nextInt();
-                    scanner.nextLine();
+                    try {
+                        System.out.print("Digite o ID do produto para saída: ");
+                        int idSaida = Integer.parseInt(scanner.nextLine());
+                        System.out.print("Digite a quantidade que deseja remover: ");
+                        int qtdSaida = Integer.parseInt(scanner.nextLine());
 
-                    boolean sucesso = estoque.saida(idSaida, qtdSaida);
-                    if (sucesso) {
-                        System.out.println("Saída registrada com sucesso!");
-                    } else {
-                        System.out.println("Erro: Operação recusada. Produto não encontrado ou quantidade solicitada maior que o estoque disponível.");
+                        boolean sucesso = estoque.saida(idSaida, qtdSaida);
+                        if (sucesso) {
+                            System.out.println("Saída registrada com sucesso!");
+                        } else {
+                            System.out.println("Erro: Operação recusada. Produto não encontrado ou quantidade solicitada maior que o estoque disponível.");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Erro: Entrada inválida. Por favor, digite números inteiros.");
                     }
-                    scanner.nextLine();
                     break;
 
                 case 5:

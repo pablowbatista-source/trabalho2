@@ -1,5 +1,3 @@
-
-
 public class Produto {
     private int id;
     private String nome;
@@ -10,23 +8,17 @@ public class Produto {
         this.id = id;
         this.nome = nome;
         this.preco = (preco < 0) ? 0.0 : preco;
-        this.quantidadeEstoque = quantidadeEstoque;
+
+        this.quantidadeEstoque = (quantidadeEstoque < 0) ? 0 : quantidadeEstoque; 
     }
 
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
+    public String getNome() { return nome; }
+    public double getPreco() { return preco; }
+    public int getQuantidadeEstoque() { return quantidadeEstoque; }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public double getPreco() {
-        return preco;
-    }
-
-    public int getQuantidadeEstoque() {
-        return quantidadeEstoque;
+    public void setPreco(double preco) {
+        if (preco >= 0) this.preco = preco;
     }
 
     public void adicionar(int quantidade) {
